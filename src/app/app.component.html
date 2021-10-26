@@ -3,7 +3,7 @@
     <div class="branding">
       <a href="javascript://" class="nav-link">
         <img src="assets/images/logo.png"/>
-        <span class="title">XDR Playground</span>
+        <span class="title">XDR Simulator</span>
       </a>
     </div>
     <div class="header-nav">
@@ -12,59 +12,91 @@
   </header>
   <div class="content-container">
     <clr-vertical-nav>
-      <a clrVerticalNavLink class="active" routerLink="./charmander" routerLinkActive="active">Data Stream Pipeline</a>
+      <a clrVerticalNavLink class="active" routerLink="./data" routerLinkActive="active">Data Stream Pipeline</a>
+      <div class="nav-divider"></div>
+      <a clrVerticalNavLink routerLink="./version">Cybereason © 0.1v</a>
+
     </clr-vertical-nav>
     <div class="content-area">
-      <router-outlet >
+      <router-outlet>
         <ul class="clr-timeline clr-timeline-horizontal pipeline">
-        <li class="clr-timeline-step disabled">
-          <div class="clr-timeline-step-header">1</div>
-          <cds-icon shape="dot-circle" aria-current="true" aria-label="Current"></cds-icon>
-          <div class="clr-timeline-step-body">
-            <span class="clr-timeline-step-title">Google Chronicle</span>
-            <span class="clr-timeline-step-description">Chronicle sending UDM in Protobuf format</span>
-          </div>
-        </li>
-        <li class="clr-timeline-step">
-          <div class="clr-timeline-step-header">2 </div>
-          <cds-icon shape="success-standard" aria-label="Completed"></cds-icon>
-          <div class="clr-timeline-step-body">
-            <span class="clr-timeline-step-title">Transform MS</span>
-            <span class="clr-timeline-step-description">
-Transforming UDM to Cybereason language & objects <cds-icon style="color: yellowgreen" shape="circle" solid></cds-icon>
+          <li class="clr-timeline-step disabled">
+            <div class="clr-timeline-step-header">1</div>
+            <cds-icon shape="dot-circle" aria-current="true" aria-label="Current"></cds-icon>
+            <div class="clr-timeline-step-body">
+              <span class="clr-timeline-step-title">Google Chronicle</span>
+              <span class="clr-timeline-step-description">Chronicle sending UDM in Protobuf format </span>
+            </div>
+          </li>
+          <li class="clr-timeline-step">
+            <div class="clr-timeline-step-header">2</div>
+            <cds-icon shape="success-standard" aria-label="Completed"></cds-icon>
+            <div class="clr-timeline-step-body">
+              <span class="clr-timeline-step-title">Transform MS</span>
+              <span class="clr-timeline-step-description">
+Transforming UDM to Cybereason <br>language & objects <cds-icon style="color: yellowgreen" shape="circle"
+                                                                solid></cds-icon>
+                        <button (click)="update('Transform')" class="btn btn-sm">Select</button>
+
       </span>
-          </div>
-        </li>
-        <li class="clr-timeline-step">
-          <div class="clr-timeline-step-header">3</div>
-          <cds-icon shape="success-standard" aria-label="Completed"></cds-icon>
-          <div class="clr-timeline-step-body">
-            <span class="clr-timeline-step-title">Identity MS</span>
-            <span class="clr-timeline-step-description">
-        Identify customer components and generates pylum id <cds-icon style="color: yellowgreen" shape="circle" solid></cds-icon>
+            </div>
+          </li>
+          <li class="clr-timeline-step">
+            <div class="clr-timeline-step-header">3</div>
+            <cds-icon shape="success-standard" aria-label="Completed"></cds-icon>
+            <div class="clr-timeline-step-body">
+              <span class="clr-timeline-step-title">Identity MS</span>
+              <span class="clr-timeline-step-description">
+        Identify customer components and generates pylum id <cds-icon style="color: yellowgreen" shape="circle"
+                                                                      solid></cds-icon>
+                <button (click)="update('Identity')" class="btn btn-sm">Select</button>
+
       </span>
-          </div>
-        </li>
-        <li class="clr-timeline-step">
-          <div class="clr-timeline-step-header">4</div>
-          <clr-spinner clrMedium aria-label="In progress"></clr-spinner>
-          <div class="clr-timeline-step-body">
-            <span class="clr-timeline-step-title">Threat MS</span>
-            <span class="clr-timeline-step-description">
-        Calculate threat and add labeling accordingly <cds-icon style="color: yellowgreen" shape="circle" solid></cds-icon>
-      </span>
-          </div>
-        </li>
-        <li class="clr-timeline-step">
-          <div class="clr-timeline-step-header">5</div>
-          <cds-icon shape="circle" aria-label="Not started"></cds-icon>
-          <div class="clr-timeline-step-body">
-            <span class="clr-timeline-step-title">Router MS</span>
-            <span class="clr-timeline-step-description">Publish Data to relevant customers <cds-icon style="color: red" shape="circle" solid></cds-icon></span>
-          </div>
-        </li>
-      </ul>
+            </div>
+          </li>
+          <li class="clr-timeline-step">
+            <div class="clr-timeline-step-header">4</div>
+            <clr-spinner clrMedium aria-label="In progress"></clr-spinner>
+            <div class="clr-timeline-step-body">
+              <span class="clr-timeline-step-title">Threat MS</span>
+              <span class="clr-timeline-step-description">
+        Calculate threat and add labeling <br>accordingly <cds-icon style="color: yellowgreen" shape="circle"
+                                                                    solid></cds-icon>
+                <button (click)="update('Threat')" class="btn btn-sm">Select</button></span>
+            </div>
+          </li>
+          <li class="clr-timeline-step">
+            <div class="clr-timeline-step-header">5</div>
+            <cds-icon shape="circle" aria-label="Not started"></cds-icon>
+            <div class="clr-timeline-step-body">
+              <span class="clr-timeline-step-title">Router MS</span>
+              <span class="clr-timeline-step-description">Publish Data to relevant <br>customers <cds-icon
+                style="color: red" shape="circle" solid></cds-icon>
+                              <button (click)="update('Router')" class="btn btn-sm">Select</button></span>
+            </div>
+          </li>
+        </ul>
       </router-outlet>
+      <form clrForm>
+        <clr-textarea-container>
+          <label class="input">INPUT (UDM)</label>
+          <textarea clrTextarea [(ngModel)]="input" name="input" required></textarea>
+          <label class="output">{{msOutput}} OUTPUT</label>
+          <textarea clrTextarea [(ngModel)]="output" name="output" readonly="readonly" required></textarea>
+        </clr-textarea-container>
+      </form>
+      <button (click)="sendMessage(this.input)" class="btn btn-primary">Execute</button>
+    </div>
+  </div>
+  <div class="alert alert-success alert-sm" *ngIf="showAlert" role="alert">
+    <div class="alert-items">
+      <div class="alert-item static">
+      <span class="alert-text">
+          Message sent to transform successfully
+      </span>
+      </div>
     </div>
   </div>
 </div>
+
+
