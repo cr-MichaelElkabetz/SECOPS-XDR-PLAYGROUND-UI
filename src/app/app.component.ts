@@ -11,7 +11,8 @@ export class AppComponent {
   title = 'xdr-simulator';
   input: any;
   output: any;
-  msOutput: any = "Router";
+  outputName: any = "Router";
+  outputNumber: number = 0;
   showAlert: boolean = false;
 
 
@@ -28,8 +29,17 @@ export class AppComponent {
     });
   }
 
-  update(msName: string) {
-    this.msOutput = msName;
+  update(selectedNode: number) {
+    this.outputNumber = selectedNode;
+    if (this.outputNumber === 1) {
+      this.outputName = 'Transformer';
+    } else if (this.outputNumber === 2) {
+      this.outputName = 'Identity';
+    } else if (this.outputNumber === 3) {
+      this.outputName = 'Threat';
+    } else if (this.outputNumber === 4) {
+      this.outputName = 'Router';
+    }
   }
 
   delay(seconds: number) {

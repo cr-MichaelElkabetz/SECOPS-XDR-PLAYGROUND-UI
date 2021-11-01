@@ -30,49 +30,55 @@
           </li>
           <li class="clr-timeline-step">
             <div class="clr-timeline-step-header">2</div>
-            <cds-icon shape="success-standard" aria-label="Completed"></cds-icon>
+            <cds-icon *ngIf="outputNumber < 1" shape="circle" aria-label="Not started"></cds-icon>
+            <clr-spinner *ngIf="outputNumber === 1" clrMedium aria-label="In progress"></clr-spinner>
+            <cds-icon *ngIf="outputNumber > 1" shape="success-standard" aria-label="Completed"></cds-icon>
             <div class="clr-timeline-step-body">
               <span class="clr-timeline-step-title">Transform MS</span>
               <span class="clr-timeline-step-description">
 Transforming UDM to Cybereason <br>language & objects <cds-icon style="color: yellowgreen" shape="circle"
                                                                 solid></cds-icon>
-                        <button (click)="update('Transform')" class="btn btn-sm">Select</button>
+                        <button (click)="update(1)" class="btn btn-sm">Select</button>
 
       </span>
             </div>
           </li>
           <li class="clr-timeline-step">
             <div class="clr-timeline-step-header">3</div>
-            <cds-icon shape="success-standard" aria-label="Completed"></cds-icon>
-            <div class="clr-timeline-step-body">
+            <cds-icon *ngIf="outputNumber < 2" shape="circle" aria-label="Not started"></cds-icon>
+            <clr-spinner *ngIf="outputNumber === 2" clrMedium aria-label="In progress"></clr-spinner>
+            <cds-icon *ngIf="outputNumber > 2" shape="success-standard" aria-label="Completed"></cds-icon>            <div class="clr-timeline-step-body">
               <span class="clr-timeline-step-title">Identity MS</span>
               <span class="clr-timeline-step-description">
         Identify customer components and generates pylum id <cds-icon style="color: yellowgreen" shape="circle"
                                                                       solid></cds-icon>
-                <button (click)="update('Identity')" class="btn btn-sm">Select</button>
+                <button (click)="update(2)" class="btn btn-sm">Select</button>
 
       </span>
             </div>
           </li>
           <li class="clr-timeline-step">
             <div class="clr-timeline-step-header">4</div>
-            <clr-spinner clrMedium aria-label="In progress"></clr-spinner>
+            <cds-icon *ngIf="outputNumber < 3" shape="circle" aria-label="Not started"></cds-icon>
+            <clr-spinner *ngIf="outputNumber === 3" clrMedium aria-label="In progress"></clr-spinner>
+            <cds-icon *ngIf="outputNumber > 3" shape="success-standard" aria-label="Completed"></cds-icon>
             <div class="clr-timeline-step-body">
               <span class="clr-timeline-step-title">Threat MS</span>
               <span class="clr-timeline-step-description">
         Calculate threat and add labeling <br>accordingly <cds-icon style="color: yellowgreen" shape="circle"
                                                                     solid></cds-icon>
-                <button (click)="update('Threat')" class="btn btn-sm">Select</button></span>
+                <button (click)="update(3)" class="btn btn-sm">Select</button></span>
             </div>
           </li>
           <li class="clr-timeline-step">
             <div class="clr-timeline-step-header">5</div>
-            <cds-icon shape="circle" aria-label="Not started"></cds-icon>
+            <cds-icon *ngIf="outputNumber < 4" shape="circle" aria-label="Not started"></cds-icon>
+            <clr-spinner *ngIf="outputNumber === 4" clrMedium aria-label="In progress"></clr-spinner>
             <div class="clr-timeline-step-body">
               <span class="clr-timeline-step-title">Router MS</span>
               <span class="clr-timeline-step-description">Publish Data to relevant <br>customers <cds-icon
                 style="color: red" shape="circle" solid></cds-icon>
-                              <button (click)="update('Router')" class="btn btn-sm">Select</button></span>
+                              <button (click)="update(4)" class="btn btn-sm">Select</button></span>
             </div>
           </li>
         </ul>
@@ -81,7 +87,7 @@ Transforming UDM to Cybereason <br>language & objects <cds-icon style="color: ye
         <clr-textarea-container>
           <label class="input">INPUT (UDM)</label>
           <textarea clrTextarea [(ngModel)]="input" name="input" required></textarea>
-          <label class="output">{{msOutput}} OUTPUT</label>
+          <label class="output">{{outputName}} OUTPUT</label>
           <textarea clrTextarea [(ngModel)]="output" name="output" readonly="readonly" required></textarea>
         </clr-textarea-container>
       </form>
