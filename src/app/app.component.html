@@ -47,7 +47,8 @@ Transforming UDM to Cybereason <br>language & objects <cds-icon style="color: ye
             <div class="clr-timeline-step-header">3</div>
             <cds-icon *ngIf="outputNumber < 2" shape="circle" aria-label="Not started"></cds-icon>
             <clr-spinner *ngIf="outputNumber === 2" clrMedium aria-label="In progress"></clr-spinner>
-            <cds-icon *ngIf="outputNumber > 2" shape="success-standard" aria-label="Completed"></cds-icon>            <div class="clr-timeline-step-body">
+            <cds-icon *ngIf="outputNumber > 2" shape="success-standard" aria-label="Completed"></cds-icon>
+            <div class="clr-timeline-step-body">
               <span class="clr-timeline-step-title">Identity MS</span>
               <span class="clr-timeline-step-description">
         Identify customer components and generates pylum id <cds-icon style="color: yellowgreen" shape="circle"
@@ -91,7 +92,7 @@ Transforming UDM to Cybereason <br>language & objects <cds-icon style="color: ye
           <textarea clrTextarea [(ngModel)]="output" name="output" readonly="readonly" required></textarea>
         </clr-textarea-container>
       </form>
-      <button (click)="sendMessage(this.input)" class="btn btn-primary">Execute</button>
+      <button (click)="produceMessage(this.input)" class="btn btn-primary">Execute</button>
     </div>
   </div>
   <div class="alert alert-success alert-sm" *ngIf="showAlert" role="alert">

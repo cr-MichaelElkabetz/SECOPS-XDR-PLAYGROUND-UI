@@ -13,9 +13,9 @@ export class DataService {
   constructor(private http: HttpClient) {
   }
 
-  sendMessage(message: string) {
+  produceMessage(message: string, msName: string) {
     let headers = new HttpHeaders().set('Content-Type', 'application/json')
-    return this.http.post<Response>(`${this.api}execute`, message, {headers})
+    return this.http.post<Response>(`${this.api}execute/` + msName, message, {headers})
       .pipe(
         catchError(this.errorHandle)
       );

@@ -12,17 +12,18 @@ export class AppComponent {
   input: any;
   output: any;
   outputName: any = "Router";
-  outputNumber: number = 0;
+  outputNumber: number = 4;
   showAlert: boolean = false;
 
 
   constructor(private dataService: DataService) {
   }
 
-  sendMessage(message: string) {
+  produceMessage(message: string) {
     this.showAlert = true;
+    this.output = '';
     this.delay(1.5).then(r => this.showAlert = false);
-    this.dataService.sendMessage(message).subscribe((response: Response) => {
+    this.dataService.produceMessage(message, this.outputName).subscribe((response: Response) => {
       if (response !== undefined) {
         this.output = response.message;
       }
