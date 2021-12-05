@@ -7,10 +7,14 @@ import {ClarityModule} from '@clr/angular';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import { BigtableComponent } from './bigtable/bigtable.component';
+import { PipelineComponent } from './pipeline/pipeline.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BigtableComponent,
+    PipelineComponent
   ],
   imports: [
     BrowserModule,

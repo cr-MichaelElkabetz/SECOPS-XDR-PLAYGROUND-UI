@@ -1,0 +1,36 @@
+<clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading">
+  <clr-dg-column>Tenant Name</clr-dg-column>
+  <clr-dg-column [clrDgField]="'adSid'">User ID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'adLogonName'">Logon Name</clr-dg-column>
+  <clr-dg-column [clrDgField]="'adDisplayName'">Display Name</clr-dg-column>
+  <clr-dg-column [clrDgField]="'adDepartment'">Department</clr-dg-column>
+  <clr-dg-column [clrDgField]="'adTitle'">Title</clr-dg-column>
+  <clr-dg-column [clrDgField]="'adCreated'">Creation Time</clr-dg-column>
+  <clr-dg-column [clrDgField]="'accountStatus'">Account Status</clr-dg-column>
+  <clr-dg-column [clrDgField]="'employeeNumber'">Employee Number</clr-dg-column>
+  <clr-dg-column [clrDgField]="'provider'">Provider</clr-dg-column>
+  <clr-dg-column [clrDgField]="'accountType'">Account Type</clr-dg-column>
+  <clr-dg-column [clrDgField]="'emailAddresses'">Email Addresses</clr-dg-column>
+  <clr-dg-column [clrDgField]="'phoneNumbers'">Phone Numbers</clr-dg-column>
+
+  <clr-dg-row *ngFor="let user of users">
+    <clr-dg-cell>Fanta</clr-dg-cell>
+    <clr-dg-cell>{{user.adSid}}</clr-dg-cell>
+    <clr-dg-cell>{{user.adLogonName}}</clr-dg-cell>
+    <clr-dg-cell>{{user.adDisplayName}}</clr-dg-cell>
+    <clr-dg-cell>{{user.adDepartment}}</clr-dg-cell>
+    <clr-dg-cell>{{user.adTitle}}</clr-dg-cell>
+    <clr-dg-cell>{{user.adCreated}}</clr-dg-cell>
+    <clr-dg-cell>{{user.accountStatus}}</clr-dg-cell>
+    <clr-dg-cell>{{user.employeeNumber}}</clr-dg-cell>
+    <clr-dg-cell>{{user.provider}}</clr-dg-cell>
+    <clr-dg-cell>{{user.accountType}}</clr-dg-cell>
+    <clr-dg-cell>{{user.emailAddresses}}</clr-dg-cell>
+    <clr-dg-cell>{{user.phoneNumbers}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{total}} users
+    <clr-dg-pagination #pagination [clrDgTotalItems]="total"></clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>

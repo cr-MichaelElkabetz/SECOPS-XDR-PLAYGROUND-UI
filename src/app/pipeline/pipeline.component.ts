@@ -1,32 +1,33 @@
-import {Component} from '@angular/core';
-import {DataService} from "./service/data/data.service";
-import {Response} from './model/response';
+import {Component, OnInit} from '@angular/core';
+import {DataService} from "../service/data/data.service";
+import {Response} from '../model/response';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+  selector: 'app-pipeline',
+  templateUrl: './pipeline.component.html',
+  styleUrls: ['./pipeline.component.sass']
 })
-export class AppComponent {
-  title = 'xdr-simulator';
+export class PipelineComponent implements OnInit {
+
   input: any;
-  output: any;
+  output: any = '';
   outputName: any = "Router";
   outputNumber: number = 4;
   showAlert: boolean = false;
-  isPipeline: boolean = true;
 
 
   constructor(private dataService: DataService) {
   }
 
+  ngOnInit(): void {
+  }
+
   produceMessage(message: string) {
     this.showAlert = true;
-    this.output = '';
     this.delay(1.5).then(r => this.showAlert = false);
     this.dataService.produceMessage(message, this.outputName).subscribe((response: Response) => {
       if (response !== undefined) {
-        this.output = response.message;
+        this.output = JSON.stringify(response.message, null, 4);
       }
     });
   }
@@ -49,13 +50,4 @@ export class AppComponent {
       setTimeout(resolve, seconds * 1000);
     });
   }
-
-  setView(param: string) {
-    if (param === 'pipeline') {
-      this.isPipeline = true;
-    } else {
-      this.isPipeline = false;
-    }
-  }
 }
-
