@@ -1,36 +1,88 @@
-<clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading">
-  <clr-dg-column>Tenant Name</clr-dg-column>
-  <clr-dg-column [clrDgField]="'adSid'">User ID</clr-dg-column>
-  <clr-dg-column [clrDgField]="'adLogonName'">Logon Name</clr-dg-column>
-  <clr-dg-column [clrDgField]="'adDisplayName'">Display Name</clr-dg-column>
-  <clr-dg-column [clrDgField]="'adDepartment'">Department</clr-dg-column>
-  <clr-dg-column [clrDgField]="'adTitle'">Title</clr-dg-column>
-  <clr-dg-column [clrDgField]="'adCreated'">Creation Time</clr-dg-column>
-  <clr-dg-column [clrDgField]="'accountStatus'">Account Status</clr-dg-column>
-  <clr-dg-column [clrDgField]="'employeeNumber'">Employee Number</clr-dg-column>
-  <clr-dg-column [clrDgField]="'provider'">Provider</clr-dg-column>
-  <clr-dg-column [clrDgField]="'accountType'">Account Type</clr-dg-column>
-  <clr-dg-column [clrDgField]="'emailAddresses'">Email Addresses</clr-dg-column>
-  <clr-dg-column [clrDgField]="'phoneNumbers'">Phone Numbers</clr-dg-column>
-
-  <clr-dg-row *ngFor="let user of users">
-    <clr-dg-cell>Fanta</clr-dg-cell>
-    <clr-dg-cell>{{user.adSid}}</clr-dg-cell>
-    <clr-dg-cell>{{user.adLogonName}}</clr-dg-cell>
-    <clr-dg-cell>{{user.adDisplayName}}</clr-dg-cell>
-    <clr-dg-cell>{{user.adDepartment}}</clr-dg-cell>
-    <clr-dg-cell>{{user.adTitle}}</clr-dg-cell>
-    <clr-dg-cell>{{user.adCreated}}</clr-dg-cell>
-    <clr-dg-cell>{{user.accountStatus}}</clr-dg-cell>
-    <clr-dg-cell>{{user.employeeNumber}}</clr-dg-cell>
-    <clr-dg-cell>{{user.provider}}</clr-dg-cell>
-    <clr-dg-cell>{{user.accountType}}</clr-dg-cell>
-    <clr-dg-cell>{{user.emailAddresses}}</clr-dg-cell>
-    <clr-dg-cell>{{user.phoneNumbers}}</clr-dg-cell>
+<div class="btn-group">
+  <div class="radio btn">
+    <input type="radio" name="btn-group-env" id="btn-demo-radio-prod" checked/>
+    <label for="btn-demo-radio-prod">PROD</label>
+  </div>
+  <div class="radio btn">
+    <input type="radio" name="btn-group-env" id="btn-demo-radio-dev" disabled/>
+    <label for="btn-demo-radio-dev">DEV</label>
+  </div>
+</div>
+<div class="btn-group">
+  <div class="radio btn">
+    <input type="radio" name="btn-group-data" (click)="updateView()" id="btn-demo-radio-accounts" checked/>
+    <label for="btn-demo-radio-accounts">User Accounts</label>
+  </div>
+  <div class="radio btn">
+    <input type="radio" name="btn-group-data" (click)="updateView()" id="btn-demo-radio-identities"/>
+    <label for="btn-demo-radio-identities">User Identities</label>
+  </div>
+</div>
+<clr-datagrid *ngIf="isAccounts" [clrDgLoading]="loading">
+  <clr-dg-column></clr-dg-column>
+  <clr-dg-column [clrDgField]="'tableName'">TenantID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'key'">Key</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.sid'">Sid</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.adLogonName'">Logon Name</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.adDisplayName'">Display Name</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.provider'">Account Provider</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.accountType'">Account Type</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.emailAddresses'">Email Addresses</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.adDepartment'">Department</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.adTitle'">Title</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.adCreated'">Creation Time</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.accountStatus'">Account Status</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.employeeNumber'">Employee Number</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.phoneNumbers'">Phone Numbers</clr-dg-column>
+  <clr-dg-row *clrDgItems="let bigtableRow of bigtableDataUserAccounts; let index=index;">
+    <clr-dg-cell>{{(index + 1) + (+pagination.currentPage - 1) * +pagination.pageSize }}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.tableName}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.key}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.sid}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.adLogonName}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.adDisplayName}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.provider}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.accountType}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.emailAddresses}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.adDepartment}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.adTitle}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.adCreated}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.accountStatus}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.employeeNumber}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.phoneNumbers }}</clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer>
-    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{total}} users
-    <clr-dg-pagination #pagination [clrDgTotalItems]="total"></clr-dg-pagination>
+    <clr-dg-pagination #pagination [clrDgPageSize]="20">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">user accounts per page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} user accounts
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<clr-datagrid *ngIf="!isAccounts" [clrDgLoading]="loading">
+  <clr-dg-column></clr-dg-column>
+  <clr-dg-column [clrDgField]="'tableName'">TenantID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'key'">Key</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userIdentity.id'">id</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userIdentity.displayNames'">Display Names</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userIdentity.nameAliases'">Name Aliases</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userIdentity.userAccounts'">UserAccounts</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let bigtableRow of bigtableDataUserIdentities; let index=index;">
+    <clr-dg-cell>{{(index + 1) + (+pagination.currentPage - 1) * +pagination.pageSize }}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.tableName}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.key}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userIdentity.id}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userIdentity.displayNames}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userIdentity.nameAliases}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userIdentity.userAccounts}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="20">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100,200]">user identities per page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} user identities
+    </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

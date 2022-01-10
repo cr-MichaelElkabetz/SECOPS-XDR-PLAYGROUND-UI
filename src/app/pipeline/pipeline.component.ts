@@ -11,9 +11,11 @@ export class PipelineComponent implements OnInit {
 
   input: any;
   output: any = '';
-  outputName: any = "Router";
-  outputNumber: number = 4;
+  outputName: any = "Transparency";
+  outputNumber: number = 5;
   showAlert: boolean = false;
+  timeElapsed: any = '';
+  requestPerformed: boolean = false;
 
 
   constructor(private dataService: DataService) {
@@ -24,10 +26,13 @@ export class PipelineComponent implements OnInit {
 
   produceMessage(message: string) {
     this.showAlert = true;
+    this.requestPerformed = true;
     this.delay(1.5).then(r => this.showAlert = false);
     this.dataService.produceMessage(message, this.outputName).subscribe((response: Response) => {
       if (response !== undefined) {
         this.output = JSON.stringify(response.message, null, 4);
+        this.timeElapsed = response.timeElapsed;
+        this.requestPerformed = false;
       }
     });
   }
@@ -42,7 +47,10 @@ export class PipelineComponent implements OnInit {
       this.outputName = 'Threat';
     } else if (this.outputNumber === 4) {
       this.outputName = 'Router';
+    } else if (this.outputNumber === 5) {
+      this.outputName = 'Transparency';
     }
+    this.requestPerformed = false;
   }
 
   delay(seconds: number) {

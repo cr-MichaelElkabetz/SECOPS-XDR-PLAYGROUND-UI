@@ -14,7 +14,7 @@ export class AppComponent {
   outputName: any = "Router";
   outputNumber: number = 4;
   showAlert: boolean = false;
-  isPipeline: boolean = true;
+  isPipeline: boolean = false;
 
 
   constructor(private dataService: DataService) {

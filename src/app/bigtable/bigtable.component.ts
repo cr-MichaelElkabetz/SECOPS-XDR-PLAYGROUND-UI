@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ClrDatagridStateInterface} from "@clr/angular";
 import {DataService} from "../service/data/data.service";
-import {UserAccount} from "../model/userAccount";
+import {BigtableAccountRow} from "../model/bigtableAccountRow";
+import {BigtableIdentityRow} from "../model/bigtableIdentityRow";
 
 @Component({
   selector: 'app-bigtable',
@@ -12,31 +12,38 @@ export class BigtableComponent implements OnInit {
 
   total: number = 0;
   loading: boolean = true;
-  users: UserAccount[] = [];
+  bigtableDataUserAccounts!: BigtableAccountRow[];
+  bigtableDataUserIdentities!: BigtableIdentityRow[];
+
+  isProd: boolean = true;
+  isAccounts: boolean = true;
 
   constructor(private dataService: DataService) {
-    this.dataService.getTenantUserAccounts('fanta').subscribe((userAccounts: UserAccount[]) => {
-      if (userAccounts !== undefined) {
-        this.users = userAccounts;
-        this.total = userAccounts.length;
+  }
+
+  ngOnInit(): void {
+    this.dataService.getBigtableUserAccounts().subscribe((bigtableData: BigtableAccountRow[]) => {
+      if (bigtableData !== undefined) {
+        this.bigtableDataUserAccounts = bigtableData;
+        this.total = this.bigtableDataUserAccounts.length;
+        this.loading = false;
+      }
+    });
+    this.dataService.getBigtableUserIdentities().subscribe((bigtableData: BigtableIdentityRow[]) => {
+      if (bigtableData !== undefined) {
+        this.bigtableDataUserIdentities = bigtableData;
+        this.total = this.bigtableDataUserIdentities.length;
         this.loading = false;
       }
     });
   }
 
-  ngOnInit(): void {
-  }
-
-  refresh(state: ClrDatagridStateInterface) {
-    this.loading = true;
-    // We convert the filters from an array to a map,
-    // because that's what our backend-calling service is expecting
-    let filters: { [prop: string]: any[] } = {};
-    if (state.filters) {
-      for (let filter of state.filters) {
-        let {property, value} = <{ property: string; value: string }>filter;
-        filters[property] = [value];
-      }
+  updateView(): void {
+    const accounts = document.getElementById("btn-demo-radio-accounts") as HTMLInputElement;
+    if (accounts.checked) {
+      this.isAccounts = true;
+    } else {
+      this.isAccounts = false
     }
   }
 }

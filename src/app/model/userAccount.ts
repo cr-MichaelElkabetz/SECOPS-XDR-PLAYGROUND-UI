@@ -1,4 +1,5 @@
 export interface UserAccount {
+  sid: string;
   adSid: string;
   adLogonName: string;
   adDisplayName: string;

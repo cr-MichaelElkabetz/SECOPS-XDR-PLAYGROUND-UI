@@ -12,12 +12,12 @@
   </header>
   <div class="content-container">
     <clr-vertical-nav>
-      <a clrVerticalNavLink style="cursor: pointer;" [ngClass]="{'active': isPipeline === true}"
-         (click)="setView('pipeline')">Pipeline Simulator</a>
       <a clrVerticalNavLink style="cursor: pointer;" [ngClass]="{'active': isPipeline === false}"
          (click)="setView('bigtable')">BigTable Viewer</a>
+      <a clrVerticalNavLink style="cursor: pointer;" [ngClass]="{'active': isPipeline === true}"
+         (click)="setView('pipeline')">Pipeline Simulator</a>
       <div class="nav-divider"></div>
-      <a clrVerticalNavLink routerLink="./version">Cybereason © 2021</a>
+      <a clrVerticalNavLink routerLink="./version">Cybereason © 2022</a>
     </clr-vertical-nav>
     <div class="content-area" *ngIf="this.isPipeline">
       <app-pipeline></app-pipeline>

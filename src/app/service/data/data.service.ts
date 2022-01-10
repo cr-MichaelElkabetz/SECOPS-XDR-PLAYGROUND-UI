@@ -3,7 +3,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import {Response} from "../../model/response";
-import {UserAccount} from "../../model/userAccount";
+import {BigtableAccountRow} from "../../model/bigtableAccountRow";
+import {BigtableIdentityRow} from "../../model/bigtableIdentityRow";
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +23,17 @@ export class DataService {
       );
   }
 
-  getTenantUserAccounts(tenantID: string) {
+  getBigtableUserAccounts() {
     let headers = new HttpHeaders().set('Content-Type', 'application/json')
-    return this.http.get<UserAccount[]>(`${this.api}user-account/get/all/` + tenantID, {headers})
+    return this.http.get<BigtableAccountRow[]>(`${this.api}bigtable-viewer/prod/accounts`, {headers})
+      .pipe(
+        catchError(this.errorHandle)
+      );
+  }
+
+  getBigtableUserIdentities() {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json')
+    return this.http.get<BigtableIdentityRow[]>(`${this.api}bigtable-viewer/prod/identities`, {headers})
       .pipe(
         catchError(this.errorHandle)
       );
