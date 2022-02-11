@@ -8,7 +8,7 @@ import {Response} from './model/response';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'xdr-simulator';
+  title = 'xdr-playground';
   input: any;
   output: any;
   outputName: any = "Router";

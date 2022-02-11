@@ -9,6 +9,7 @@ export interface UserAccount {
   accountStatus: string;
   employeeNumber: string;
   provider: string;
+  userIdentity: string;
   accountType: string;
   emailAddresses: string[];
   phoneNumbers: string[];

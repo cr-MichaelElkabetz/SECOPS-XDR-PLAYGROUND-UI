@@ -1,10 +1,10 @@
 <div class="btn-group">
   <div class="radio btn">
-    <input type="radio" name="btn-group-env" id="btn-demo-radio-prod" checked/>
+    <input type="radio" name="btn-group-env" (click)="updateMode()" id="btn-demo-radio-prod" checked/>
     <label for="btn-demo-radio-prod">PROD</label>
   </div>
   <div class="radio btn">
-    <input type="radio" name="btn-group-env" id="btn-demo-radio-dev" disabled/>
+    <input type="radio" name="btn-group-env" (click)="updateMode()" id="btn-demo-radio-dev"/>
     <label for="btn-demo-radio-dev">DEV</label>
   </div>
 </div>
@@ -18,7 +18,9 @@
     <label for="btn-demo-radio-identities">User Identities</label>
   </div>
 </div>
-<clr-datagrid *ngIf="isAccounts" [clrDgLoading]="loading">
+<label *ngIf="isProd"><strong>ProjectID:</strong> xdr-prod-host-project <strong>InstanceID:</strong> xdr-us-east1</label>
+<label *ngIf="!isProd"><strong>ProjectID:</strong> xdr-dev-host-project <strong>InstanceID:</strong> xdr-dev</label>
+<clr-datagrid *ngIf="isAccounts && isProd" [clrDgLoading]="loading">
   <clr-dg-column></clr-dg-column>
   <clr-dg-column [clrDgField]="'tableName'">TenantID</clr-dg-column>
   <clr-dg-column [clrDgField]="'key'">Key</clr-dg-column>
@@ -26,6 +28,7 @@
   <clr-dg-column [clrDgField]="'userAccount.adLogonName'">Logon Name</clr-dg-column>
   <clr-dg-column [clrDgField]="'userAccount.adDisplayName'">Display Name</clr-dg-column>
   <clr-dg-column [clrDgField]="'userAccount.provider'">Account Provider</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.userIdentity'">User Identity</clr-dg-column>
   <clr-dg-column [clrDgField]="'userAccount.accountType'">Account Type</clr-dg-column>
   <clr-dg-column [clrDgField]="'userAccount.emailAddresses'">Email Addresses</clr-dg-column>
   <clr-dg-column [clrDgField]="'userAccount.adDepartment'">Department</clr-dg-column>
@@ -34,7 +37,7 @@
   <clr-dg-column [clrDgField]="'userAccount.accountStatus'">Account Status</clr-dg-column>
   <clr-dg-column [clrDgField]="'userAccount.employeeNumber'">Employee Number</clr-dg-column>
   <clr-dg-column [clrDgField]="'userAccount.phoneNumbers'">Phone Numbers</clr-dg-column>
-  <clr-dg-row *clrDgItems="let bigtableRow of bigtableDataUserAccounts; let index=index;">
+  <clr-dg-row *clrDgItems="let bigtableRow of bigtableProdDataUserAccounts; let index=index;">
     <clr-dg-cell>{{(index + 1) + (+pagination.currentPage - 1) * +pagination.pageSize }}</clr-dg-cell>
     <clr-dg-cell>{{bigtableRow.tableName}}</clr-dg-cell>
     <clr-dg-cell>{{bigtableRow.key}}</clr-dg-cell>
@@ -42,8 +45,9 @@
     <clr-dg-cell>{{bigtableRow.userAccount.adLogonName}}</clr-dg-cell>
     <clr-dg-cell>{{bigtableRow.userAccount.adDisplayName}}</clr-dg-cell>
     <clr-dg-cell>{{bigtableRow.userAccount.provider}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.userIdentity}}</clr-dg-cell>
     <clr-dg-cell>{{bigtableRow.userAccount.accountType}}</clr-dg-cell>
-    <clr-dg-cell>{{bigtableRow.userAccount.emailAddresses}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.emailAddresses | json}}</clr-dg-cell>
     <clr-dg-cell>{{bigtableRow.userAccount.adDepartment}}</clr-dg-cell>
     <clr-dg-cell>{{bigtableRow.userAccount.adTitle}}</clr-dg-cell>
     <clr-dg-cell>{{bigtableRow.userAccount.adCreated}}</clr-dg-cell>
@@ -53,34 +57,105 @@
   </clr-dg-row>
 
   <clr-dg-footer>
-    <clr-dg-pagination #pagination [clrDgPageSize]="20">
-      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">user accounts per page</clr-dg-page-size>
+    <clr-dg-pagination #pagination [clrDgPageSize]="100">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100,200]">user accounts per page</clr-dg-page-size>
       {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} user accounts
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>
 
-<clr-datagrid *ngIf="!isAccounts" [clrDgLoading]="loading">
+<clr-datagrid *ngIf="isAccounts && !isProd" [clrDgLoading]="loading">
+  <clr-dg-column></clr-dg-column>
+  <clr-dg-column [clrDgField]="'tableName'">TenantID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'key'">Key</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.sid'">Sid</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.adLogonName'">Logon Name</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.adDisplayName'">Display Name</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.provider'">Account Provider</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.userIdentity'">User Identity</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.accountType'">Account Type</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.emailAddresses'">Email Addresses</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.adDepartment'">Department</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.adTitle'">Title</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.adCreated'">Creation Time</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.accountStatus'">Account Status</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.employeeNumber'">Employee Number</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userAccount.phoneNumbers'">Phone Numbers</clr-dg-column>
+  <clr-dg-row *clrDgItems="let bigtableRow of bigtableDevDataUserAccounts; let index=index;">
+    <clr-dg-cell>{{(index + 1) + (+pagination.currentPage - 1) * +pagination.pageSize }}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.tableName}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.key}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.sid}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.adLogonName}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.adDisplayName}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.provider}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.userIdentity}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.accountType}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.emailAddresses | json}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.adDepartment}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.adTitle}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.adCreated}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.accountStatus}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.employeeNumber}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userAccount.phoneNumbers }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="100">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100,200]">user accounts per page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} user accounts
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<clr-datagrid *ngIf="!isAccounts && isProd" [clrDgLoading]="loading">
   <clr-dg-column></clr-dg-column>
   <clr-dg-column [clrDgField]="'tableName'">TenantID</clr-dg-column>
   <clr-dg-column [clrDgField]="'key'">Key</clr-dg-column>
   <clr-dg-column [clrDgField]="'userIdentity.id'">id</clr-dg-column>
   <clr-dg-column [clrDgField]="'userIdentity.displayNames'">Display Names</clr-dg-column>
   <clr-dg-column [clrDgField]="'userIdentity.nameAliases'">Name Aliases</clr-dg-column>
-  <clr-dg-column [clrDgField]="'userIdentity.userAccounts'">UserAccounts</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userIdentity.userAccounts'">User Accounts</clr-dg-column>
 
-  <clr-dg-row *clrDgItems="let bigtableRow of bigtableDataUserIdentities; let index=index;">
+  <clr-dg-row *clrDgItems="let bigtableRow of bigtableProdDataUserIdentities; let index=index;">
     <clr-dg-cell>{{(index + 1) + (+pagination.currentPage - 1) * +pagination.pageSize }}</clr-dg-cell>
     <clr-dg-cell>{{bigtableRow.tableName}}</clr-dg-cell>
     <clr-dg-cell>{{bigtableRow.key}}</clr-dg-cell>
     <clr-dg-cell>{{bigtableRow.userIdentity.id}}</clr-dg-cell>
-    <clr-dg-cell>{{bigtableRow.userIdentity.displayNames}}</clr-dg-cell>
-    <clr-dg-cell>{{bigtableRow.userIdentity.nameAliases}}</clr-dg-cell>
-    <clr-dg-cell>{{bigtableRow.userIdentity.userAccounts}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userIdentity.displayNames }}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userIdentity.nameAliases | json}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userIdentity.userAccounts | json}}</clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer>
-    <clr-dg-pagination #pagination [clrDgPageSize]="20">
+    <clr-dg-pagination #pagination [clrDgPageSize]="100">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100,200]">user identities per page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} user identities
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<clr-datagrid *ngIf="!isAccounts && !isProd" [clrDgLoading]="loading">
+  <clr-dg-column></clr-dg-column>
+  <clr-dg-column [clrDgField]="'tableName'">TenantID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'key'">Key</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userIdentity.id'">id</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userIdentity.displayNames'">Display Names</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userIdentity.nameAliases'">Name Aliases</clr-dg-column>
+  <clr-dg-column [clrDgField]="'userIdentity.userAccounts'">User Accounts</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let bigtableRow of bigtableDevDataUserIdentities; let index=index;">
+    <clr-dg-cell>{{(index + 1) + (+pagination.currentPage - 1) * +pagination.pageSize }}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.tableName}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.key}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userIdentity.id}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userIdentity.displayNames }}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userIdentity.nameAliases | json}}</clr-dg-cell>
+    <clr-dg-cell>{{bigtableRow.userIdentity.userAccounts | json}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="100">
       <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100,200]">user identities per page</clr-dg-page-size>
       {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} user identities
     </clr-dg-pagination>

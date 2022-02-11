@@ -12,8 +12,10 @@ export class BigtableComponent implements OnInit {
 
   total: number = 0;
   loading: boolean = true;
-  bigtableDataUserAccounts!: BigtableAccountRow[];
-  bigtableDataUserIdentities!: BigtableIdentityRow[];
+  bigtableProdDataUserAccounts!: BigtableAccountRow[];
+  bigtableProdDataUserIdentities!: BigtableIdentityRow[];
+  bigtableDevDataUserAccounts!: BigtableAccountRow[];
+  bigtableDevDataUserIdentities!: BigtableIdentityRow[];
 
   isProd: boolean = true;
   isAccounts: boolean = true;
@@ -22,17 +24,32 @@ export class BigtableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getBigtableUserAccounts().subscribe((bigtableData: BigtableAccountRow[]) => {
+    this.dataService.getProdBigtableUserAccounts().subscribe((bigtableData: BigtableAccountRow[]) => {
       if (bigtableData !== undefined) {
-        this.bigtableDataUserAccounts = bigtableData;
-        this.total = this.bigtableDataUserAccounts.length;
+        this.bigtableProdDataUserAccounts = bigtableData;
+        this.total = this.bigtableProdDataUserAccounts.length;
         this.loading = false;
       }
     });
-    this.dataService.getBigtableUserIdentities().subscribe((bigtableData: BigtableIdentityRow[]) => {
+    this.dataService.getProdBigtableUserIdentities().subscribe((bigtableData: BigtableIdentityRow[]) => {
       if (bigtableData !== undefined) {
-        this.bigtableDataUserIdentities = bigtableData;
-        this.total = this.bigtableDataUserIdentities.length;
+        this.bigtableProdDataUserIdentities = bigtableData;
+        this.total = this.bigtableProdDataUserIdentities.length;
+        this.loading = false;
+      }
+    });
+
+    this.dataService.getDevBigtableUserAccounts().subscribe((bigtableData: BigtableAccountRow[]) => {
+      if (bigtableData !== undefined) {
+        this.bigtableDevDataUserAccounts = bigtableData;
+        this.total = this.bigtableDevDataUserAccounts.length;
+        this.loading = false;
+      }
+    });
+    this.dataService.getDevBigtableUserIdentities().subscribe((bigtableData: BigtableIdentityRow[]) => {
+      if (bigtableData !== undefined) {
+        this.bigtableDevDataUserIdentities = bigtableData;
+        this.total = this.bigtableDevDataUserIdentities.length;
         this.loading = false;
       }
     });
@@ -44,6 +61,15 @@ export class BigtableComponent implements OnInit {
       this.isAccounts = true;
     } else {
       this.isAccounts = false
+    }
+  }
+
+  updateMode() {
+    const prod = document.getElementById("btn-demo-radio-prod") as HTMLInputElement;
+    if (prod.checked) {
+      this.isProd = true;
+    } else {
+      this.isProd = false
     }
   }
 }

@@ -23,7 +23,7 @@ export class DataService {
       );
   }
 
-  getBigtableUserAccounts() {
+  getProdBigtableUserAccounts() {
     let headers = new HttpHeaders().set('Content-Type', 'application/json')
     return this.http.get<BigtableAccountRow[]>(`${this.api}bigtable-viewer/prod/accounts`, {headers})
       .pipe(
@@ -31,9 +31,25 @@ export class DataService {
       );
   }
 
-  getBigtableUserIdentities() {
+  getProdBigtableUserIdentities() {
     let headers = new HttpHeaders().set('Content-Type', 'application/json')
     return this.http.get<BigtableIdentityRow[]>(`${this.api}bigtable-viewer/prod/identities`, {headers})
+      .pipe(
+        catchError(this.errorHandle)
+      );
+  }
+
+  getDevBigtableUserAccounts() {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json')
+    return this.http.get<BigtableAccountRow[]>(`${this.api}bigtable-viewer/dev/accounts`, {headers})
+      .pipe(
+        catchError(this.errorHandle)
+      );
+  }
+
+  getDevBigtableUserIdentities() {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json')
+    return this.http.get<BigtableIdentityRow[]>(`${this.api}bigtable-viewer/dev/identities`, {headers})
       .pipe(
         catchError(this.errorHandle)
       );
